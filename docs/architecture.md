@@ -1,4 +1,4 @@
-# ShopNow AI Voice Agent Architecture
+l# ShopNow AI Voice Agent Architecture
 
 ## Overview
 This document outlines the architecture for the ShopNow AI Voice Agent, a highly resilient, multi-turn conversational agent capable of serving Tier-1 customer support needs in English, Hindi, and regional languages. 
@@ -32,28 +32,28 @@ This brief is subsequently pushed via WebSockets or Server-Sent Events to the Re
 sequenceDiagram
     participant User
     participant React Dashboard
-    participant FastAPI (Backend)
+    participant FastAPI as FastAPI (Backend)
     participant Speech Services
-    participant Engine (LangChain + Gemini)
-    participant FAISS (Vector Store)
+    participant Engine as Engine (LangChain + Gemini)
+    participant FAISS as FAISS (Vector Store)
     
     User->>React Dashboard: Voice Input (Multi-lingual)
-    React Dashboard->>FastAPI (Backend): Audio Blob Stream
-    FastAPI (Backend)->>Speech Services: STT (Language Detection included)
-    Speech Services-->>FastAPI (Backend): Transcribed text in source language
-    FastAPI (Backend)->>Engine (LangChain + Gemini): Analyze Text (Sentiment + Intent)
+    React Dashboard->>FastAPI: Audio Blob Stream
+    FastAPI->>Speech Services: STT (Language Detection included)
+    Speech Services-->>FastAPI: Transcribed text in source language
+    FastAPI->>Engine: Analyze Text (Sentiment + Intent)
     
     alt Knowledge Retrieval Needed
-        Engine (LangChain + Gemini)->>FAISS (Vector Store): Semantic Search
-        FAISS (Vector Store)-->>Engine (LangChain + Gemini): Relevant Chunks
+        Engine->>FAISS: Semantic Search
+        FAISS-->>Engine: Relevant Chunks
     else SQL/Order Data Needed
-        Engine (LangChain + Gemini)->>FastAPI (Backend): Query Mock Database
-        FastAPI (Backend)-->>Engine (LangChain + Gemini): JSON Response
+        Engine->>FastAPI: Query Mock Database
+        FastAPI-->>Engine: JSON Response
     end
     
-    Engine (LangChain + Gemini)-->>FastAPI (Backend): Generated Text Response & Metrics
-    FastAPI (Backend)->>Speech Services: TTS Request (in spoken language)
-    Speech Services-->>FastAPI (Backend): Audio Output
-    FastAPI (Backend)-->>React Dashboard: Audio Stream + Live KPI Metrics
+    Engine-->>FastAPI: Generated Text Response & Metrics
+    FastAPI->>Speech Services: TTS Request (in spoken language)
+    Speech Services-->>FastAPI: Audio Output
+    FastAPI-->>React Dashboard: Audio Stream + Live KPI Metrics
     React Dashboard-->>User: Plays Audio
 ```
